@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo de Gauss</title>
+</head>
+<script>
+// Función para obtener la matriz ingresada por el usuario
+function obtenerMatriz() {
+    const matriz = [];
+
+  
+    for (let i = 0; i < 3; i++) {
+      matriz.push([]);
+      for (let j = 0; j < 3; j++) {
+        const elemento = parseFloat(prompt(`Ingrese el elemento [${i + 1}][${j + 1}]:`));
+        matriz[i].push(elemento);
+      }
+    }
+  
+    return matriz;
+  }
+  
+  // Función para obtener el vector b ingresado por el usuario
+  function obtenerVectorB() {
+    const vectorB = [];
+  
+  
+    for (let i = 0; i < 3; i++) {
+      const elemento = parseFloat(prompt(`Ingrese el elemento [${i + 1}]:`));
+      vectorB.push(elemento);
+    }
+  
+    return vectorB;
+  }
+  
+  // Función para calcular los errores absolutos
+  function calcularErroresAbsolutos(xAnterior, xActual) {
+    const erroresAbsolutos = [];
+    for (let i = 0; i < xAnterior.length; i++) {
+      erroresAbsolutos.push(Math.abs(xActual[i] - xAnterior[i]));
+    }
+    return erroresAbsolutos;
+  }
+  
+  // Función para calcular el error máximo
+  function calcularErrorMaximo(erroresAbsolutos) {
+    return Math.max(...erroresAbsolutos);
+  }
+  
+  // Función para resolver el método de Gauss-Seidel
+  function resolverGaussSeidel(matriz, vectorB, numIteraciones) {
+    // Valores iniciales de x1, x2, x3
+    let xAnterior = [0, 0, 0];
+    let xActual = [0, 0, 0];
+  
+    // Mostrar encabezado de la tabla
+    console.log("Iteración\t x1\t\t x2\t\t x3\t\t Error1\t\t Error2\t\t Error3\t\t Error Máximo");
+    console.log("-------------------------------------------------------------------------------------");
+  
+    // Bucle principal del método de Gauss-Seidel
+    for (let iter = 1; iter <= numIteraciones; iter++) {
+      // Guardar los valores anteriores de x1, x2, x3
+      xAnterior = [...xActual];
+  
+      // Actualizar los valores de x1, x2, x3
+      xActual[0] = (vectorB[0] - matriz[0][1] * xAnterior[1] - matriz[0][2] * xAnterior[2]) / matriz[0][0];
+      xActual[1] = (vectorB[1] - matriz[1][0] * xAnterior[0] - matriz[1][2] * xAnterior[2]) / matriz[1][1];
+      xActual[2] = (vectorB[2] - matriz[2][0] * xAnterior[0] - matriz[2][1] * xAnterior[1]) / matriz[2][2];
+  
+      // Calcular los errores absolutos
+      const erroresAbsolutos = calcularErroresAbsolutos(xAnterior, xActual);
+  
+      // Calcular el error máximo
+      const errorMaximo = calcularErrorMaximo(erroresAbsolutos);
+  
+      // Mostrar los valores de x1, x2, x3 y sus errores absolutos, junto con el error máximo
+      console.log(`${iter}\t\t ${xActual[0].toFixed(6)}\t ${xActual[1].toFixed(6)}\t ${xActual[2].toFixed(6)}\t ${erroresAbsolutos[0].toFixed(6)}\t ${erroresAbsolutos[1].toFixed(6)}\t ${erroresAbsolutos[2].toFixed(6)}\t ${errorMaximo.toFixed(6)}`);
+    }
+  }
+  
+  // Obtener la matriz y el vector b ingresados por el usuario
+  const matriz = obtenerMatriz();
+  const vectorB = obtenerVectorB();
+  
+  // Definir el número de iteraciones
+  const numIteraciones = parseInt(prompt("Ingrese el número de iteraciones:"));
+  
+  // Resolver el método de Gauss-Seidel
+  resolverGaussSeidel(matriz, vectorB, numIteraciones);
+</script>
+<body>
+    
+</body>
+</html>

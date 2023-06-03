@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo de la secante</title>
+</head>
+<script>
+    // Función para evaluar una ecuación dada
+function evaluarEcuacion(ecuacion, x) {
+    // Reemplazar 'x' en la ecuación por el valor dado
+    ecuacion = ecuacion.replace(/x/g, x.toString());
+    // Evaluar la ecuación y devolver el resultado
+    return eval(ecuacion);
+  }
+  
+  // Implementación del método de la secante
+  function metodoSecante(ecuacion, x0, x1, iteraciones) {
+    let resultados = [];
+    let fx0 = evaluarEcuacion(ecuacion, x0);
+    let fx1 = evaluarEcuacion(ecuacion, x1);
+  
+    for (let i = 0; i < iteraciones; i++) {
+      let x2 = x1 - (fx1 * (x1 - x0)) / (fx1 - fx0);
+      let fx2 = evaluarEcuacion(ecuacion, x2);
+  
+      resultados.push({
+        Iteración: i + 1,
+        "x0": x0,
+        "x1": x1,
+        "x2": x2,
+        'f(x0)': fx0,
+        "f(x1)": fx1,
+        "f(x2)": fx2
+      });
+  
+      x0 = x1;
+      x1 = x2;
+      fx0 = fx1;
+      fx1 = fx2;
+    }
+  
+    return resultados;
+    
+    
+  }
+  
+  
+  // Solicitar ecuación al usuario
+  const ecuacion = prompt('Ingrese la ecuación:');
+  
+  // Solicitar valor inicial x0 al usuario
+  const x0 = parseFloat(prompt('Ingrese el valor inicial x0:'));
+  
+  // Solicitar valor inicial x1 al usuario
+  const x1 = parseFloat(prompt('Ingrese el valor inicial x1:'));
+  
+  // Solicitar cantidad de iteraciones al usuario
+  const iteraciones = parseInt(prompt('Ingrese la cantidad de iteraciones:'));
+  
+  // Ejecutar el método de la secante
+  const resultados = metodoSecante(ecuacion, x0, x1, iteraciones);
+  
+  // Mostrar resultados en formato de tabla
+  console.table(resultados);
+  
+</script>
+<body>
+
+<div id="loco"></div>
+
+</body>
+</html>

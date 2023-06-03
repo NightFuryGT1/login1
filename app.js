@@ -33,17 +33,28 @@ app.use(session({
 const connection = require('./database/db');
 
 //9 - establecemos las rutas
+    app.get('/newton',(req, res)=>{
+	res.render('newton');
+    })
 	app.get('/login',(req, res)=>{
 		res.render('login');
 	})
-
 	app.get('/register',(req, res)=>{
 		res.render('register');
 	})
-
 	app.get('/menu',(req, res)=>{
 		res.render('menu');
 	})
+	app.get('/secante',(req, res)=>{
+		res.render('secante');
+	})
+    app.get('/muller',(req, res)=>{
+		res.render('muller');
+	})
+	app.get('/gauss',(req, res)=>{
+		res.render('gauss');
+	})
+	
 	
 	
 
@@ -152,3 +163,4 @@ app.get('/logout', function (req, res) {
 app.listen(3000, (req, res)=>{
     console.log('SERVER RUNNING IN http://localhost:3000');
 });
+

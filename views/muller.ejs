@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo de Muller</title>
+</head>
+<script>
+// Función para evaluar una ecuación dada
+function evaluarEcuacion(ecuacion, x) {
+  // Reemplazar 'x' en la ecuación por el valor dado
+  ecuacion = ecuacion.replace(/x/g, x.toString());
+  // Evaluar la ecuación y devolver el resultado
+  return eval(ecuacion);
+}
+
+// Implementación del método de Muller
+function metodoMuller(ecuacion, x0, x1, x2, iteracionesMaximas, tolerancia) {
+  let iteraciones = [];
+  let i = 0;
+  let h1 = x1 - x0;
+  let h2 = x2 - x1;
+
+  while (i < iteracionesMaximas) {
+    let f0 = evaluarEcuacion(ecuacion, x0);
+    let f1 = evaluarEcuacion(ecuacion, x1);
+    let f2 = evaluarEcuacion(ecuacion, x2);
+
+    let delta1 = (f1 - f0) / h1;
+    let delta2 = (f2 - f1) / h2;
+
+    let a = (delta2 - delta1) / (h2 + h1);
+    let b = a * h2 + delta2;
+    let c = f2;
+
+    let discriminante = Math.sqrt(b * b - 4 * a * c);
+
+    let denominador = b > 0 ? b + discriminante : b - discriminante;
+    let x3 = x2 - (2 * c) / denominador;
+
+    iteraciones.push({
+      iteracion: i + 1,
+      x0: x0,
+      x1: x1,
+      x2: x2,
+      x3: x3,
+    });
+
+    if (Math.abs(x3 - x2) < tolerancia) {
+      return {
+        raiz: x3,
+        iteraciones: iteraciones,
+      }; // Retornar la raíz encontrada y las iteraciones
+    }
+
+    x0 = x1;
+    x1 = x2;
+    x2 = x3;
+
+    h1 = x1 - x0;
+    h2 = x2 - x1;
+    i++;
+  }
+
+  return {
+    raiz: null,
+    iteraciones: iteraciones,
+  }; // No se encontró una raíz en el número de iteraciones dadas, retorna las iteraciones realizadas hasta el momento
+}
+
+// Solicitar ecuación al usuario
+const ecuacion = prompt('Ingrese la ecuación:');
+
+// Solicitar valor inicial x0 al usuario
+const x0 = parseFloat(prompt('Ingrese el valor inicial x0:'));
+
+// Solicitar valor inicial x1 al usuario
+const x1 = parseFloat(prompt('Ingrese el valor inicial x1:'));
+
+// Solicitar valor inicial x2 al usuario
+const x2 = parseFloat(prompt('Ingrese el valor inicial x2:'));
+
+// Solicitar cantidad de iteraciones al usuario
+const iteracionesMaximas = parseInt(prompt('Ingrese la cantidad de iteraciones:'));
+
+// Tolerancia o margen de error
+const tolerancia = 0.0001;
+
+// Ejecutar el método de Muller
+const resultado = metodoMuller(ecuacion, x0, x1, x2, iteracionesMaximas, tolerancia);
+
+if (resultado.raiz !== null) {
+  console.log(`La raíz encontrada es: ${resultado.raiz}`);
+} else {
+  console.log('No se pudo encontrar una raíz en las iteraciones dadas.');
+}
+
+// Mostrar iteraciones en formato de tabla
+console.log('Iteraciones:');
+console.table(resultado.iteraciones);
+
+</script>
+<body>
+    <input id="ecuacion" type="text" placeholder="Ingrese la ecuacion">
+ <br>
+ <input id="x0" type="text" placeholder="Ingrese el valor inicial de x0">
+ <br>
+ <input id="x1" type="text" placeholder="Ingrese el valor inicial de x1">
+ <br>
+ <input id="Iteraciones" type="text" placeholder="Ingrese el numero de iteraciones">
+
+ 
+</body>
+</html>
